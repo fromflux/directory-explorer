@@ -18,6 +18,7 @@ const fileSystemMock = [
   {
     type: 'folder',
     name: 'Expenses',
+    added: '2017-02-06',
     files:
       [
         {
@@ -40,6 +41,7 @@ const fileSystemMock = [
   {
     type: 'folder',
     name: 'Misc',
+    added: '2012-07-05',
     files:
       [
         {
@@ -52,6 +54,24 @@ const fileSystemMock = [
           name: 'Welcome to the company!',
           added: '2015-04-24',
         },
+        {
+          type: 'folder',
+          name: 'Inner',
+          added: '2012-07-05',
+          files:
+            [
+              {
+                type: 'doc',
+                name: 'Some inner entry',
+                added: '2012-11-05',
+              },
+              {
+                type: 'cpp',
+                name: 'Unknown type',
+                added: '2023-03-06',
+              },
+            ],
+        },
       ],
   },
 ];
@@ -59,13 +79,13 @@ const fileSystemMock = [
 type TFileSystemEntry = ({
   type: string
   name: string
-  added: string
+  added?: string
   files?: undefined
 } | {
   type: string
   name: string
+  added?: string
   files: TFileSystemContent
-  added?: undefined
 })
 
 type TFileSystemContent = TFileSystemEntry[]
@@ -118,22 +138,37 @@ function reduce(state: TState, action: TAction) {
   }
 }
 
+const fileTypeIconNames = {
+  folder: 'folder_a',
+  pdf: 'pdf',
+  csv: 'csv',
+  doc: 'doc',
+  mov: 'mov',
+};
+
+function getIconFilename(type: string): string {
+  return fileTypeIconNames[type as keyof typeof fileTypeIconNames] || 'null';
+}
+
 function DirectoryExplorerEntry({
   entry, onClick,
 }: { entry: TFileSystemEntry, onClick: Function }) {
   return (
-    <li>
+    <li className="file-browser-entry">
       <button
         type="button"
         onClick={() => {
           onClick(entry);
         }}
       >
-        {entry.type}
-        {' '}
-        {entry.name}
-        {' '}
-        {entry.added}
+        <img src={`icons/${getIconFilename(entry.type)}.png`} alt="pdf icon" width="32" height="32" />
+
+        <span>{entry.name}</span>
+
+        <span>{entry.type}</span>
+
+        <span>{entry.added}</span>
+
       </button>
     </li>
   );
@@ -145,12 +180,19 @@ export default function DirectoryExplorer() {
   return (
     <div className="directory-explorer">
       <h1>Directory Explorer</h1>
-      <ul>
+      <ul className="file-browser">
+        <li className="file-browser-header">
+          <span> </span>
+          <span>Name</span>
+          <span>Type</span>
+          <span>Added</span>
+        </li>
         {state.current.parent && (
           <DirectoryExplorerEntry
             entry={{
               name: 'parent',
               type: 'folder',
+              added: '',
               files: [],
             }}
             onClick={() => {

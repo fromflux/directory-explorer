@@ -1,3 +1,51 @@
 .directory-explorer {
-  color: rebeccapurple;
+  color: #383c33;
+}
+
+.file-browser {
+  padding: 0;
+  margin: 0;
+}
+
+.file-browser-entry {
+  list-style: none;
+  display: block;
+  width: 100%;
+}
+
+
+.file-browser-entry>button,
+.file-browser-header {
+  --spacing: 4px;
+
+  cursor: pointer;
+  border: none;
+  background-color: white;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 1.2em 1fr auto auto;
+  grid-template-columns:
+    1.2em minmax(150px, 2fr) minmax(150px, 1fr) minmax(100px, auto);
+  gap: var(--spacing);
+  padding: var(--spacing);
+
+  text-align: center;
+  color: inherit;
+}
+
+.file-browser-entry>button>* {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-browser-entry:nth-child(even)>button {
+  background-color: #f7f7f7;
+}
+
+.file-browser-entry>button img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
