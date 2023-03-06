@@ -17,6 +17,12 @@ npm start
 http://localhost:8080/
 ```
 
+## Run Tests
+
+```
+npm test
+```
+
 ## License
 
 Copyright (c) 2023 Rod Melo
